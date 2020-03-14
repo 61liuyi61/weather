@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>天气信息</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script type="application/javascript" src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">天气查询系统</a>
+        </div>
+
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="http://www.weather.com.cn/" target="_blank">中国天气网</a></li>
+            </ul>
+            <form class="navbar-form navbar-left"
+                  action="https://www.baidu.com/s" target="_blank">
+                <div class="form-group">
+                    <input type="text" name="wd" class="form-control"
+                           placeholder="百度一下      ">
+                </div>
+
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">退出登录</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+    <div class="navbar-collapse collapse">
+        <!-- 选项卡菜单-->
+        <div style="text-align: center;">
+            <ul id="myTab" class="nav nav-tabs" role="tablist" style="display: inline-block;float: none;">
+                <li class="active"><a href="#today" role="tab" data-toggle="tab">&ensp;今日天气&ensp;</a></li>
+                <li><a href="#seven_days" role="tab" data-toggle="tab">&ensp;7日天气&ensp;</a></li>
+                <li><a href="#history" role="tab" data-toggle="tab">&ensp;过去一年&ensp;</a></li>
+                <li><a href="#wave" role="tab" data-toggle="tab">&ensp;温度波动&ensp;</a></li>
+            </ul>
+        </div>
+        <!-- 选项卡面板 -->
+        <div id="myTabContent" class="tab-content"
+             style="text-align: center; background-color: #EEEEE0; display: block">
+
+            <!--今日天气-->
+            <div class="tab-pane fade in active" id="today">
+                <br>
+                <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                <p th:text="${'日期：' + session.weatherInfo.getDates()}"></p><br>
+                <p th:text="${'天气：' + session.weatherInfo.getWeather()}"></p><br>
+                <img style="height: 40px" th:src="${session.image.getImgUrl()}">
+                <br><br>
+                <p th:text="${'温度：' + session.weatherInfo.getMin() + '℃ ~ ' + session.weatherInfo.getMax() + '℃'}"></p>
+                <br>
+                <p th:text="${'风向：' + session.weatherInfo.getWind()}"></p>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+            </div>
+
+            <!--7日天气-->
+            <div class="tab-pane fade" id="seven_days"><br>
+
+                <div class="row">
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(0).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(0).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(0)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(0).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(0).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.weatherInfo.getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(1).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(1).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(1)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(1).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(1).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.weatherInfo.getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.sevenDaysWeather.get(2).getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(2).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(2).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(2)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(2).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(2).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.sevenDaysWeather.get(2).getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(3).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(3).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(3)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(3).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(3).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.sevenDaysWeather.get(3).getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(4).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(4).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(4)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(4).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(4).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.sevenDaysWeather.get(4).getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(5).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(5).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(5)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(5).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(5).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.sevenDaysWeather.get(5).getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                    <div style="width: 150px; border: 1px solid #000000; display: inline-block;">
+                        <strong><p th:text="${session.weatherInfo.getCity()}"></p></strong><br>
+                        <p th:text="${'日期：' + session.sevenDaysWeather.get(6).getDates()}"></p><br>
+                        <p th:text="${'天气：' + session.sevenDaysWeather.get(6).getWeather()}"></p><br>
+                        <img style="height: 40px" th:src="${session.imageList.get(6)}">
+                        <br><br>
+                        <p th:text="${'温度：' + session.sevenDaysWeather.get(6).getMin() + '℃ ~ ' + session.sevenDaysWeather.get(6).getMax() + '℃'}"></p>
+                        <br>
+                        <p th:text="${'风向：' + session.sevenDaysWeather.get(6).getWind()}"></p>
+                        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!--一年温度波动图-->
+            <div class="tab-pane fade" id="history">
+                <div>
+                    <br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '一月份天气'}" th:href="@{/find_history(historyDate='2019年01月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '二月份天气'}" th:href="@{/find_history(historyDate='2019年02月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '三月份天气'}" th:href="@{/find_history(historyDate='2019年03月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '四月份天气'}" th:href="@{/find_history(historyDate='2019年04月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '五月份天气'}" th:href="@{/find_history(historyDate='2019年05月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '六月份天气'}" th:href="@{/find_history(historyDate='2019年06月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '七月份天气'}" th:href="@{/find_history(historyDate='2019年07月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '八月份天气'}" th:href="@{/find_history(historyDate='2019年08月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '九月份天气'}" th:href="@{/find_history(historyDate='2019年09月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '十月份天气'}" th:href="@{/find_history(historyDate='2019年10月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br>
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '十一月份天气'}" th:href="@{/find_history(historyDate='2019年11月',city=${session.weatherInfo.getCity()})}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:text="'2019年' + ${session.weatherInfo.getCity() + '十二月份天气'}" th:href="@{/find_history(historyDate='2019年12月',city=${session.weatherInfo.getCity()})}"></a>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </div>
+
+            </div>
+
+
+            <div class="tab-pane fade" id="wave">
+                <br>
+                <div id="main" style="width: 1200px;height:500px;"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 选项卡点击事件-->
+<script type="application/javascript">
+    $(function () {
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab("show");
+        });
+    })
+</script>
+
+<!--图形化-->
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '2019年温度波动图'
+        },
+        tooltip: {},
+        legend: {
+            data: ['最高温度', '最低温度']
+        },
+        xAxis: {
+            data: ["一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月", "一月",
+                "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月", "二月",
+                "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月", "三月",
+                "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月", "四月",
+                "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月", "五月",
+                "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月", "六月",
+                "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月", "七月",
+                "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月", "八月",
+                "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "九月", "十月",
+                "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月", "十月",
+                "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月", "十一月",
+                "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月", "十二月"],
+            axisLabel: {
+                interval: 30
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} (℃)'
+            }
+        },
+        series: [{
+            data: [5, 20, 36, 10, 10],
+            name: '最高温度',
+            type: 'line'
+
+        }, {
+            name: '最低温度',
+            type: 'line',
+            data: [1, 16, 16, 6, 8, 10]
+        }
+
+        ]
+    };
+
+    //接收后台historyList
+    var yMax = [[${historyListMax}]];
+    option.series[0].data = yMax;
+    var yMin = [[${historyListMin}]];
+    option.series[1].data = yMin;
+
+    var title = "2019年" + [[${city}]] + "温度波动图";
+    option.title.text = title
+
+    myChart.setOption(option);
+</script>
+
+</body>
+</html>
